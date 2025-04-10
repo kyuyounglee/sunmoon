@@ -4,7 +4,7 @@
 
 ### 1.1 사업 배경
 - EUV 리소그래피 기술의 글로벌 확산에 따른 검사 기술 수요 증가
-- 기존 검사 방식의 한계 극복을 위한 AI 기반 솔루션 필요성
+- 기존 검사 방식의 한계 극복을 위한 AI 기반 솔루션 필요성s
 - 국내 반도체 산업 경쟁력 강화를 위한 핵심 기술 자립화 필요
 
 ### 1.2 사업 목적
@@ -180,6 +180,226 @@ result = Aggregate(y_1, y_2, ..., y_B)
 
 - result: 최종 결과
 - Aggregate: 결과 통합 함수
+
+
+### 2.3 핵심 알고리즘
+
+#### 2.3.1 결함 검출 알고리즘
+
+```python
+class DefectDetectionSystem:
+    def __init__(self):
+        self.backbone = ResNet50()
+        self.fpn = FeaturePyramidNetwork()
+        self.detector = DefectDetector()
+        
+    def detect_defects(self, image):
+        # 1. 다중 스케일 특징 추출
+        features = self._extract_features(image)
+        
+        # 2. 특징 피라미드 구축
+        pyramid_features = self._build_pyramid(features)
+        
+        # 3. 결함 검출
+        defects = self._detect_defects(pyramid_features)
+        
+        return defects
+        
+    def _extract_features(self, image):
+        # ResNet 기반 특징 추출
+        features = []
+        x = image
+        for layer in self.backbone.layers:
+            x = layer(x)
+            features.append(x)
+        return features
+        
+    def _build_pyramid(self, features):
+        # FPN 기반 피라미드 구축
+        pyramid = []
+        for i in range(len(features)):
+            if i == 0:
+                pyramid.append(features[i])
+            else:
+                upsampled = self.fpn.upsample(pyramid[-1])
+                pyramid.append(upsampled + self.fpn.conv1x1(features[i]))
+        return pyramid
+        
+    def _detect_defects(self, pyramid_features):
+        # 결함 검출
+        defects = []
+        for features in pyramid_features:
+            detection = self.detector(features)
+            defects.append(detection)
+        return defects
+```
+
+#### 2.3.2 결함 분류 알고리즘
+
+```python
+class DefectClassificationSystem:
+    def __init__(self):
+        self.cnn = ConvNeXt()
+        self.transformer = VisionTransformer()
+        self.fusion = CrossAttention()
+        self.classifier = Classifier()
+        
+    def classify_defects(self, defect_image):
+        # 1. CNN 특징 추출
+        cnn_features = self._extract_cnn_features(defect_image)
+        
+        # 2. Transformer 특징 추출
+        trans_features = self._extract_transformer_features(defect_image)
+        
+        # 3. 특징 융합
+        fused_features = self._fuse_features(cnn_features, trans_features)
+        
+        # 4. 결함 분류
+        classification = self._classify(fused_features)
+        
+        return classification
+        
+    def _extract_cnn_features(self, image):
+        # ConvNeXt 기반 특징 추출
+        return self.cnn(image)
+        
+    def _extract_transformer_features(self, image):
+        # Vision Transformer 기반 특징 추출
+        return self.transformer(image)
+        
+    def _fuse_features(self, cnn_features, trans_features):
+        # 교차 주의 기반 특징 융합
+        return self.fusion(cnn_features, trans_features)
+        
+    def _classify(self, features):
+        # 결함 분류
+        return self.classifier(features)
+```
+
+#### 2.3.3 데이터 증강 알고리즘
+
+```python
+class DataAugmentationSystem:
+    def __init__(self):
+        self.generator = DefectGenerator()
+        self.validator = DataValidator()
+        
+    def augment_data(self, original_data):
+        # 1. 기본 이미지 변환
+        transformed = self._apply_basic_transformations(original_data)
+        
+        # 2. 노이즈 추가
+        noisy = self._add_noise(transformed)
+        
+        # 3. 결함 생성
+        augmented = self._generate_defects(noisy)
+        
+        # 4. 데이터 검증
+        validated = self._validate_data(augmented)
+        
+        return validated
+        
+    def _apply_basic_transformations(self, data):
+        # 밝기, 크기, 회전 변환
+        transformed = []
+        for image in data:
+            # 밝기 조정
+            bright = self._adjust_brightness(image)
+            # 크기 조정
+            scaled = self._resize(bright)
+            # 회전
+            rotated = self._rotate(scaled)
+            transformed.append(rotated)
+        return transformed
+        
+    def _add_noise(self, data):
+        # 가우시안 노이즈 추가
+        noisy = []
+        for image in data:
+            noise = np.random.normal(0, self.noise_std, image.shape)
+            noisy.append(image + noise)
+        return noisy
+        
+    def _generate_defects(self, data):
+        # 생성 모델을 통한 결함 생성
+        generated = []
+        for image in data:
+            defect = self.generator.generate(image)
+            generated.append(defect)
+        return generated
+        
+    def _validate_data(self, data):
+        # 데이터 품질 검증
+        validated = []
+        for sample in data:
+            if self.validator.validate(sample):
+                validated.append(sample)
+        return validated
+```
+
+#### 2.3.4 실시간 처리 알고리즘
+
+```python
+class RealTimeProcessingSystem:
+    def __init__(self):
+        self.preprocessor = ImagePreprocessor()
+        self.processor = ParallelProcessor()
+        self.aggregator = ResultAggregator()
+        
+    def process(self, image_stream):
+        # 1. 이미지 전처리
+        preprocessed = self._preprocess_images(image_stream)
+        
+        # 2. 병렬 처리
+        processed = self._parallel_process(preprocessed)
+        
+        # 3. 결과 통합
+        results = self._aggregate_results(processed)
+        
+        return results
+        
+    def _preprocess_images(self, stream):
+        # 노이즈 제거 및 정규화
+        preprocessed = []
+        for image in stream:
+            denoised = self.preprocessor.denoise(image)
+            normalized = self.preprocessor.normalize(denoised)
+            preprocessed.append(normalized)
+        return preprocessed
+        
+    def _parallel_process(self, images):
+        # GPU 기반 병렬 처리
+        batch_size = self.processor.batch_size
+        processed = []
+        
+        for i in range(0, len(images), batch_size):
+            batch = images[i:i+batch_size]
+            results = self.processor.process_batch(batch)
+            processed.extend(results)
+            
+        return processed
+        
+    def _aggregate_results(self, results):
+        # 결과 통합 및 후처리
+        return self.aggregator.aggregate(results)
+```
+결함 검출 시스템 (DefectDetectionSystem)
+   ResNet50 백본 네트워크를 사용한 특징 추출
+   FPN(Feature Pyramid Network)을 통한 다중 스케일 특징 처리
+   결함 검출을 위한 전용 모듈
+결함 분류 시스템 (DefectClassificationSystem)
+   ConvNeXt와 Vision Transformer의 하이브리드 구조
+   교차 주의 메커니즘을 통한 특징 융합
+   다중 모달 분류기
+데이터 증강 시스템 (DataAugmentationSystem)
+   기본 이미지 변환(밝기, 크기, 회전)
+   가우시안 노이즈 추가
+   생성 모델 기반 결함 생성
+   데이터 품질 검증
+실시간 처리 시스템 (RealTimeProcessingSystem)
+   이미지 전처리 파이프라인
+   GPU 기반 병렬 처리
+   결과 통합 및 후처리
 
 ## 3. 기술 개발 로드맵
 
