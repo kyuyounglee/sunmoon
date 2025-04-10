@@ -68,7 +68,7 @@
 ```
 F_l = Conv_{l}(F_{l-1}) + ResBlock_{l}(F_{l-1})
 ```
-여기서:
+
 - F_l: l번째 스케일의 특징 맵
 - Conv_l: l번째 컨볼루션 레이어
 - ResBlock_l: l번째 잔차 블록
@@ -77,7 +77,7 @@ F_l = Conv_{l}(F_{l-1}) + ResBlock_{l}(F_{l-1})
 ```
 P_l = Upsample(P_{l+1}) + Conv_{1x1}(F_l)
 ```
-여기서:
+
 - P_l: l번째 피라미드 레벨의 특징
 - Upsample: 업샘플링 연산
 
@@ -85,7 +85,7 @@ P_l = Upsample(P_{l+1}) + Conv_{1x1}(F_l)
 ```
 P(d|x) = sigmoid(W_d * P_l + b_d)
 ```
-여기서:
+
 - P(d|x): 입력 x에 대한 결함 d의 확률
 - W_d: 가중치 행렬
 - b_d: 편향 벡터
@@ -96,7 +96,7 @@ P(d|x) = sigmoid(W_d * P_l + b_d)
 ```
 f_cnn = ConvNeXt(F_{in})
 ```
-여기서:
+
 - f_cnn: CNN으로 추출된 특징
 - F_in: 입력 특징 맵
 
@@ -104,14 +104,14 @@ f_cnn = ConvNeXt(F_{in})
 ```
 f_trans = Transformer(F_{in})
 ```
-여기서:
+
 - f_trans: Transformer로 추출된 특징
 
 3. **특징 융합**
 ```
 f_fused = CrossAttention(f_cnn, f_trans)
 ```
-여기서:
+
 - f_fused: 융합된 특징
 - CrossAttention: 교차 주의 메커니즘
 
@@ -119,7 +119,7 @@ f_fused = CrossAttention(f_cnn, f_trans)
 ```
 P(c|f) = softmax(W_c * f_fused + b_c)
 ```
-여기서:
+
 - P(c|f): 특징 f에 대한 클래스 c의 확률
 - W_c: 가중치 행렬
 - b_c: 편향 벡터
@@ -130,7 +130,7 @@ P(c|f) = softmax(W_c * f_fused + b_c)
 ```
 x' = T(x) = R(S(B(x)))
 ```
-여기서:
+
 - x: 원본 이미지
 - B: 밝기 조정
 - S: 크기 조정
@@ -148,7 +148,7 @@ x_noisy = x + N(0, sigma^2)
 ```
 d_new = G(z, c)
 ```
-여기서:
+
 - d_new: 생성된 결함
 - G: 생성 모델
 - z: 잠재 변수
@@ -160,7 +160,7 @@ d_new = G(z, c)
 ```
 x_pre = Normalize(Denoise(x))
 ```
-여기서:
+
 - x: 입력 이미지
 - Denoise: 노이즈 제거
 - Normalize: 정규화
@@ -169,7 +169,7 @@ x_pre = Normalize(Denoise(x))
 ```
 y = ParallelProcess(x_pre, batch_size=B)
 ```
-여기서:
+
 - y: 처리 결과
 - batch_size: 배치 크기
 
@@ -177,7 +177,7 @@ y = ParallelProcess(x_pre, batch_size=B)
 ```
 result = Aggregate(y_1, y_2, ..., y_B)
 ```
-여기서:
+
 - result: 최종 결과
 - Aggregate: 결과 통합 함수
 
