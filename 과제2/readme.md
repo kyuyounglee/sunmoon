@@ -1,4 +1,3 @@
-
 # PFAS 대체 소재 개발을 위한 AI 활용 물성/합성 분석 기술 개발 제안서
 
 ## 1. 사업 개요
@@ -16,54 +15,21 @@
 ## 2. 기술 개발 내용
 
 ### 2.1 핵심 기술 개발
-1. **AI 기반 가상 합성 환경 구축**
-   - 분자 구조 설계 시스템 개발
-   - 합성 모사 모듈 구현
-   - 실험 데이터베이스 구축
 
-2. **물성 예측 시스템**
-   - 절연성, 내열성, 불연성 등 물성 예측 모델
-   - 분자 구조-물성 관계 분석
-   - 실험 데이터 기반 검증 시스템
+#### 2.1.1 AI 기반 가상 합성 환경 구축
 
-3. **합성 최적화 시스템**
-   - 합성 경로 예측 알고리즘
-   - 반응 조건 최적화 모델
-   - 실시간 모니터링 시스템
-
-### 2.2 시스템 아키텍처
-
-#### 2.2.1 AI 기반 가상 합성 환경
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     분자 구조 설계 레이어                     │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │ 구조 예측   │  │ 물성 예측   │  │ 합성 경로 예측      │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│                     합성 최적화 레이어                        │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │ 조건 최적화 │  │ 실시간 모니터│  │ 결과 검증          │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### 2.3 핵심 알고리즘
-
-#### 2.3.1 분자 구조 예측 알고리즘
+##### 1. 분자 구조 설계 시스템
 ```python
-class MolecularStructurePredictor:
+class MolecularDesignSystem:
     def __init__(self):
         self.gnn = GraphNeuralNetwork()
         self.transformer = MolecularTransformer()
         self.optimizer = GeneticAlgorithm()
+        self.validator = MolecularValidator()
         
-    def predict_structure(self, target_properties):
+    def design_molecule(self, target_properties):
         # 1. 초기 구조 생성
-        initial_structures = self._generate_initial_structures()
+        initial_structures = self._generate_initial_structures(target_properties)
         
         # 2. 구조 최적화
         optimized_structures = self._optimize_structures(initial_structures)
@@ -71,31 +37,266 @@ class MolecularStructurePredictor:
         # 3. 물성 예측
         predicted_properties = self._predict_properties(optimized_structures)
         
-        # 4. 최종 구조 선택
-        final_structure = self._select_best_structure(predicted_properties)
+        # 4. 구조 검증
+        validated_structures = self._validate_structures(optimized_structures)
         
-        return final_structure
+        return validated_structures
+
+    def _generate_initial_structures(self, properties):
+        # GNN 기반 구조 생성
+        structures = self.gnn.generate(properties)
+        return structures
+
+    def _optimize_structures(self, structures):
+        # 유전 알고리즘 기반 최적화
+        optimized = self.optimizer.optimize(structures)
+        return optimized
 ```
 
-#### 2.3.2 합성 경로 예측 알고리즘
+##### 2. 합성 모사 모듈
+```python
+class SynthesisSimulator:
+    def __init__(self):
+        self.reaction_predictor = ReactionPredictor()
+        self.condition_simulator = ConditionSimulator()
+        self.path_optimizer = PathOptimizer()
+        
+    def simulate_synthesis(self, target_molecule):
+        # 1. 반응 예측
+        reactions = self._predict_reactions(target_molecule)
+        
+        # 2. 조건 시뮬레이션
+        conditions = self._simulate_conditions(reactions)
+        
+        # 3. 경로 최적화
+        optimal_path = self._optimize_path(conditions)
+        
+        return optimal_path
+
+    def _predict_reactions(self, molecule):
+        # 반응 예측
+        reactions = self.reaction_predictor.predict(molecule)
+        return reactions
+
+    def _simulate_conditions(self, reactions):
+        # 조건 시뮬레이션
+        conditions = self.condition_simulator.simulate(reactions)
+        return conditions
+```
+
+##### 3. 실험 데이터베이스 시스템
+```python
+class ExperimentalDatabase:
+    def __init__(self):
+        self.data_processor = DataProcessor()
+        self.data_validator = DataValidator()
+        self.data_analyzer = DataAnalyzer()
+        
+    def process_data(self, raw_data):
+        # 1. 데이터 전처리
+        processed_data = self._preprocess_data(raw_data)
+        
+        # 2. 데이터 검증
+        validated_data = self._validate_data(processed_data)
+        
+        # 3. 데이터 분석
+        analyzed_data = self._analyze_data(validated_data)
+        
+        return analyzed_data
+
+    def _preprocess_data(self, data):
+        # 데이터 전처리
+        processed = self.data_processor.process(data)
+        return processed
+```
+
+#### 2.1.2 물성 예측 시스템
+
+##### 1. 물성 예측 모델
+```python
+class PropertyPredictor:
+    def __init__(self):
+        self.insulation_predictor = InsulationPredictor()
+        self.heat_resistance_predictor = HeatResistancePredictor()
+        self.flame_retardant_predictor = FlameRetardantPredictor()
+        
+    def predict_properties(self, molecule):
+        # 1. 절연성 예측
+        insulation = self._predict_insulation(molecule)
+        
+        # 2. 내열성 예측
+        heat_resistance = self._predict_heat_resistance(molecule)
+        
+        # 3. 불연성 예측
+        flame_retardant = self._predict_flame_retardant(molecule)
+        
+        return {
+            'insulation': insulation,
+            'heat_resistance': heat_resistance,
+            'flame_retardant': flame_retardant
+        }
+
+    def _predict_insulation(self, molecule):
+        # 절연성 예측
+        return self.insulation_predictor.predict(molecule)
+```
+
+##### 2. 분자 구조-물성 관계 분석 시스템
+```python
+class StructurePropertyAnalyzer:
+    def __init__(self):
+        self.correlation_analyzer = CorrelationAnalyzer()
+        self.pattern_analyzer = PatternAnalyzer()
+        self.relationship_model = RelationshipModel()
+        
+    def analyze_relationship(self, structures, properties):
+        # 1. 상관관계 분석
+        correlations = self._analyze_correlations(structures, properties)
+        
+        # 2. 패턴 분석
+        patterns = self._analyze_patterns(structures, properties)
+        
+        # 3. 관계 모델링
+        model = self._model_relationships(correlations, patterns)
+        
+        return model
+
+    def _analyze_correlations(self, structures, properties):
+        # 상관관계 분석
+        return self.correlation_analyzer.analyze(structures, properties)
+```
+
+#### 2.1.3 합성 최적화 시스템
+
+##### 1. 합성 경로 예측 알고리즘
 ```python
 class SynthesisPathPredictor:
     def __init__(self):
         self.reaction_predictor = ReactionPredictor()
-        self.condition_optimizer = ConditionOptimizer()
+        self.path_generator = PathGenerator()
         self.path_evaluator = PathEvaluator()
         
     def predict_path(self, target_molecule):
         # 1. 반응 예측
-        possible_reactions = self._predict_reactions(target_molecule)
+        reactions = self._predict_reactions(target_molecule)
         
-        # 2. 경로 최적화
-        optimal_path = self._optimize_path(possible_reactions)
+        # 2. 경로 생성
+        paths = self._generate_paths(reactions)
         
-        # 3. 조건 최적화
-        optimized_conditions = self._optimize_conditions(optimal_path)
+        # 3. 경로 평가
+        optimal_path = self._evaluate_paths(paths)
         
-        return optimized_conditions
+        return optimal_path
+
+    def _predict_reactions(self, molecule):
+        # 반응 예측
+        return self.reaction_predictor.predict(molecule)
+```
+
+##### 2. 반응 조건 최적화 모델
+```python
+class ReactionConditionOptimizer:
+    def __init__(self):
+        self.condition_predictor = ConditionPredictor()
+        self.optimizer = ConditionOptimizer()
+        self.validator = ConditionValidator()
+        
+    def optimize_conditions(self, reaction):
+        # 1. 조건 예측
+        conditions = self._predict_conditions(reaction)
+        
+        # 2. 조건 최적화
+        optimized = self._optimize_conditions(conditions)
+        
+        # 3. 조건 검증
+        validated = self._validate_conditions(optimized)
+        
+        return validated
+
+    def _predict_conditions(self, reaction):
+        # 조건 예측
+        return self.condition_predictor.predict(reaction)
+```
+
+##### 3. 실시간 모니터링 시스템
+```python
+class RealTimeMonitor:
+    def __init__(self):
+        self.data_collector = DataCollector()
+        self.analyzer = DataAnalyzer()
+        self.alert_system = AlertSystem()
+        
+    def monitor(self, synthesis_process):
+        # 1. 데이터 수집
+        data = self._collect_data(synthesis_process)
+        
+        # 2. 데이터 분석
+        analysis = self._analyze_data(data)
+        
+        # 3. 알림 처리
+        alerts = self._process_alerts(analysis)
+        
+        return alerts
+
+    def _collect_data(self, process):
+        # 데이터 수집
+        return self.data_collector.collect(process)
+```
+
+### 2.2 시스템 아키텍처
+
+#### 2.2.1 전체 시스템 아키텍처
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     AI 기반 가상 합성 환경                     │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                     분자 구조 설계 시스템                      │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
+│  │ 구조 생성   │  │ 구조 최적화 │  │ 구조 검증          │  │
+│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                     물성 예측 시스템                          │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
+│  │ 절연성 예측 │  │ 내열성 예측 │  │ 불연성 예측        │  │
+│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                     합성 최적화 시스템                        │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
+│  │ 경로 예측   │  │ 조건 최적화 │  │ 실시간 모니터링    │  │
+│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### 2.2.2 데이터 흐름 아키텍처
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     실험 데이터베이스                          │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                     데이터 전처리 시스템                      │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
+│  │ 데이터 정제 │  │ 데이터 변환 │  │ 데이터 검증        │  │
+│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                     AI 모델 학습 시스템                       │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
+│  │ 모델 학습   │  │ 모델 검증   │  │ 모델 최적화        │  │
+│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ## 3. 기술 개발 로드맵
