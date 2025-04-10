@@ -53,6 +53,47 @@ class MolecularDesignSystem:
         return optimized
 ```
 
+**수학적 공식화:**
+
+1. **분자 구조 표현**
+   - 분자 그래프 \( G = (V, E) \)
+     - \( V \): 원자 노드 집합
+     - \( E \): 결합 엣지 집합
+     - 노드 특성: \( h_v \in \mathbb{R}^d \)
+     - 엣지 특성: \( e_{uv} \in \mathbb{R}^k \)
+
+2. **GNN 기반 구조 생성**
+   - 메시지 전달 함수:
+     \[
+     m_{v}^{(t)} = \sum_{u \in N(v)} M_t(h_v^{(t-1)}, h_u^{(t-1)}, e_{uv})
+     \]
+     여기서 \( m_{v}^{(t)} \)는 노드 \( v \)의 t번째 메시지, \( N(v) \)는 노드 \( v \)의 이웃 노드 집합
+   
+   - 노드 업데이트:
+     \[
+     h_v^{(t)} = U_t(h_v^{(t-1)}, m_v^{(t)})
+     \]
+     여기서 \( h_v^{(t)} \)는 노드 \( v \)의 t번째 은닉 상태
+   
+   - 최종 구조 예측:
+     \[
+     P(G|p) = \prod_{v \in V} P(v|h_v^{(T)}) \prod_{(u,v) \in E} P(e_{uv}|h_u^{(T)}, h_v^{(T)})
+     \]
+     여기서 \( P(G|p) \)는 주어진 물성 \( p \)에 대한 분자 구조 \( G \)의 확률
+
+3. **유전 알고리즘 최적화**
+   - 적합도 함수:
+     \[
+     f(G) = \sum_{i} w_i \cdot |p_i - \hat{p}_i|
+     \]
+     여기서 \( p_i \)는 목표 물성, \( \hat{p}_i \)는 예측 물성, \( w_i \)는 가중치
+   
+   - 선택 확률:
+     \[
+     P(G_i) = \frac{f(G_i)}{\sum_j f(G_j)}
+     \]
+     여기서 \( P(G_i) \)는 분자 구조 \( G_i \)의 선택 확률
+
 ##### 2. 합성 모사 모듈
 ```python
 class SynthesisSimulator:
@@ -84,6 +125,47 @@ class SynthesisSimulator:
         return conditions
 ```
 
+**수학적 공식화:**
+
+1. **반응 예측 모델**
+   - 반응 확률:
+     \[
+     P(r|m) = \frac{\exp(s(m,r))}{\sum_{r'}\exp(s(m,r'))}
+     \]
+     여기서 \( P(r|m) \)는 분자 \( m \)에 대한 반응 \( r \)의 확률
+   
+   - 점수 함수:
+     \[
+     s(m,r) = \text{MLP}([\text{GNN}(m), \text{Embedding}(r)])
+     \]
+     여기서 \( \text{MLP} \)는 다층 퍼셉트론, \( \text{GNN} \)은 그래프 신경망
+
+2. **조건 시뮬레이션**
+   - 반응 속도:
+     \[
+     r = k \cdot \prod_i [A_i]^{\alpha_i}
+     \]
+     여기서 \( r \)은 반응 속도, \( k \)는 속도 상수, \( [A_i] \)는 반응물 농도
+   
+   - 온도 의존성:
+     \[
+     k = A \cdot e^{-\frac{E_a}{RT}}
+     \]
+     여기서 \( A \)는 전지수 인자, \( E_a \)는 활성화 에너지, \( R \)은 기체 상수
+
+3. **경로 최적화**
+   - 목적 함수:
+     \[
+     \min_{\pi} \sum_{t} c(s_t, a_t) + \lambda \cdot \text{risk}(s_t)
+     \]
+     여기서 \( c(s_t, a_t) \)는 비용 함수, \( \text{risk}(s_t) \)는 위험 함수
+   
+   - 벨만 방정식:
+     \[
+     V(s) = \min_a \{c(s,a) + \gamma \cdot \mathbb{E}[V(s')]\}
+     \]
+     여기서 \( V(s) \)는 상태 \( s \)의 가치 함수, \( \gamma \)는 할인 인자
+
 ##### 3. 실험 데이터베이스 시스템
 ```python
 class ExperimentalDatabase:
@@ -109,6 +191,34 @@ class ExperimentalDatabase:
         processed = self.data_processor.process(data)
         return processed
 ```
+
+**수학적 공식화:**
+
+1. **데이터 전처리**
+   - 정규화:
+     \[
+     x' = \frac{x - \mu}{\sigma}
+     \]
+     여기서 \( \mu \)는 평균, \( \sigma \)는 표준편차
+   
+   - 이상치 제거:
+     \[
+     \text{outlier} = |x - \mu| > 3\sigma
+     \]
+     여기서 \( 3\sigma \)는 3-시그마 규칙
+
+2. **데이터 검증**
+   - 일관성 검사:
+     \[
+     \text{consistency} = \frac{1}{n}\sum_{i=1}^n \mathbb{I}(x_i \in \text{valid\_range})
+     \]
+     여기서 \( \mathbb{I} \)는 지시 함수
+   
+   - 상관관계 검증:
+     \[
+     \rho = \frac{\text{cov}(X,Y)}{\sigma_X \sigma_Y}
+     \]
+     여기서 \( \text{cov} \)는 공분산
 
 #### 2.1.2 물성 예측 시스템
 
@@ -141,6 +251,34 @@ class PropertyPredictor:
         return self.insulation_predictor.predict(molecule)
 ```
 
+**수학적 공식화:**
+
+1. **다중 물성 예측**
+   - 공동 학습 목적 함수:
+     \[
+     \mathcal{L} = \sum_{i=1}^k w_i \cdot \mathcal{L}_i + \lambda \cdot \|\theta\|_2^2
+     \]
+     여기서 \( \mathcal{L}_i \)는 각 물성의 손실 함수, \( \lambda \)는 정규화 파라미터
+   
+   - 각 물성 예측:
+     \[
+     \hat{y}_i = f_i(\text{GNN}(G); \theta_i)
+     \]
+     여기서 \( f_i \)는 각 물성의 예측 함수
+
+2. **불확실성 정량화**
+   - 예측 분포:
+     \[
+     p(y|x) = \mathcal{N}(\mu(x), \sigma^2(x))
+     \]
+     여기서 \( \mu(x) \)는 예측 평균, \( \sigma^2(x) \)는 예측 분산
+   
+   - 불확실성:
+     \[
+     \text{uncertainty} = \sqrt{\mathbb{E}[\sigma^2(x)] + \text{Var}[\mu(x)]}
+     \]
+     여기서 \( \text{Var} \)는 분산
+
 ##### 2. 분자 구조-물성 관계 분석 시스템
 ```python
 class StructurePropertyAnalyzer:
@@ -165,6 +303,34 @@ class StructurePropertyAnalyzer:
         # 상관관계 분석
         return self.correlation_analyzer.analyze(structures, properties)
 ```
+
+**수학적 공식화:**
+
+1. **상관관계 분석**
+   - 부분 상관계수:
+     \[
+     \rho_{XY|Z} = \frac{\rho_{XY} - \rho_{XZ}\rho_{YZ}}{\sqrt{(1-\rho_{XZ}^2)(1-\rho_{YZ}^2)}}
+     \]
+     여기서 \( \rho_{XY|Z} \)는 Z를 고려한 X와 Y의 부분 상관계수
+   
+   - 중요도 점수:
+     \[
+     I(f) = \sum_{S \subseteq F \setminus \{f\}} \frac{|S|!(|F|-|S|-1)!}{|F|!} \cdot \Delta(f,S)
+     \]
+     여기서 \( \Delta(f,S) \)는 특징 \( f \)의 기여도
+
+2. **패턴 인식**
+   - 그래프 커널:
+     \[
+     K(G,G') = \sum_{k=0}^\infty \lambda^k \cdot \langle \phi_k(G), \phi_k(G') \rangle
+     \]
+     여기서 \( \phi_k \)는 k번째 그래프 특성
+   
+   - 패턴 매칭:
+     \[
+     \text{similarity} = \frac{\sum_{i} \min(x_i, y_i)}{\sum_{i} \max(x_i, y_i)}
+     \]
+     여기서 \( x_i, y_i \)는 비교 대상 패턴
 
 #### 2.1.3 합성 최적화 시스템
 
@@ -193,6 +359,34 @@ class SynthesisPathPredictor:
         return self.reaction_predictor.predict(molecule)
 ```
 
+**수학적 공식화:**
+
+1. **경로 생성**
+   - 상태 전이 확률:
+     \[
+     P(s_{t+1}|s_t,a_t) = \text{softmax}(W \cdot [s_t,a_t])
+     \]
+     여기서 \( W \)는 가중치 행렬
+   
+   - 보상 함수:
+     \[
+     R(s,a) = \alpha \cdot \text{yield} + \beta \cdot \text{cost} + \gamma \cdot \text{safety}
+     \]
+     여기서 \( \alpha, \beta, \gamma \)는 가중치
+
+2. **경로 평가**
+   - 최적 경로:
+     \[
+     \pi^* = \arg\max_\pi \mathbb{E}[\sum_{t=0}^T \gamma^t R(s_t,a_t)]
+     \]
+     여기서 \( \pi^* \)는 최적 정책
+   
+   - 정책 기울기:
+     \[
+     \nabla_\theta J(\theta) = \mathbb{E}[\sum_{t=0}^T \nabla_\theta \log \pi_\theta(a_t|s_t) \cdot Q^\pi(s_t,a_t)]
+     \]
+     여기서 \( Q^\pi \)는 행동-가치 함수
+
 ##### 2. 반응 조건 최적화 모델
 ```python
 class ReactionConditionOptimizer:
@@ -218,6 +412,34 @@ class ReactionConditionOptimizer:
         return self.condition_predictor.predict(reaction)
 ```
 
+**수학적 공식화:**
+
+1. **조건 최적화**
+   - 목적 함수:
+     \[
+     \min_{x} f(x) = \text{yield}(x) + \lambda \cdot \text{cost}(x)
+     \]
+     여기서 \( x \)는 반응 조건
+   
+   - 제약 조건:
+     \[
+     g_i(x) \leq 0, \quad i = 1,...,m
+     \]
+     여기서 \( g_i \)는 제약 함수
+
+2. **베이지안 최적화**
+   - 획득 함수:
+     \[
+     \alpha(x) = \mu(x) + \kappa \cdot \sigma(x)
+     \]
+     여기서 \( \kappa \)는 탐색-활용 균형 파라미터
+   
+   - 사후 분포:
+     \[
+     p(f|D) = \mathcal{N}(\mu(x), k(x,x'))
+     \]
+     여기서 \( k \)는 커널 함수
+
 ##### 3. 실시간 모니터링 시스템
 ```python
 class RealTimeMonitor:
@@ -242,6 +464,34 @@ class RealTimeMonitor:
         # 데이터 수집
         return self.data_collector.collect(process)
 ```
+
+**수학적 공식화:**
+
+1. **이상 감지**
+   - 마할라노비스 거리:
+     \[
+     D(x) = \sqrt{(x-\mu)^T \Sigma^{-1} (x-\mu)}
+     \]
+     여기서 \( \Sigma \)는 공분산 행렬
+   
+   - 이상치 점수:
+     \[
+     \text{score} = \frac{|x - \text{median}|}{\text{MAD}}
+     \]
+     여기서 MAD는 중위수 절대 편차
+
+2. **시계열 분석**
+   - 자기상관:
+     \[
+     \rho_k = \frac{\sum_{t=k+1}^T (x_t - \bar{x})(x_{t-k} - \bar{x})}{\sum_{t=1}^T (x_t - \bar{x})^2}
+     \]
+     여기서 \( \rho_k \)는 k-지연 자기상관
+   
+   - 이동 평균:
+     \[
+     \text{MA}(t) = \frac{1}{w} \sum_{i=0}^{w-1} x_{t-i}
+     \]
+     여기서 \( w \)는 윈도우 크기
 
 ### 2.2 시스템 아키텍처
 
