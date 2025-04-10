@@ -384,22 +384,22 @@ class RealTimeProcessingSystem:
         return self.aggregator.aggregate(results)
 ```
 결함 검출 시스템 (DefectDetectionSystem)
-   ResNet50 백본 네트워크를 사용한 특징 추출
-   FPN(Feature Pyramid Network)을 통한 다중 스케일 특징 처리
-   결함 검출을 위한 전용 모듈
+   - ResNet50 백본 네트워크를 사용한 특징 추출
+   - FPN(Feature Pyramid Network)을 통한 다중 스케일 특징 처리
+   - 결함 검출을 위한 전용 모듈
 결함 분류 시스템 (DefectClassificationSystem)
-   ConvNeXt와 Vision Transformer의 하이브리드 구조
-   교차 주의 메커니즘을 통한 특징 융합
-   다중 모달 분류기
+   - ConvNeXt와 Vision Transformer의 하이브리드 구조
+   - 교차 주의 메커니즘을 통한 특징 융합
+   - 다중 모달 분류기
 데이터 증강 시스템 (DataAugmentationSystem)
-   기본 이미지 변환(밝기, 크기, 회전)
-   가우시안 노이즈 추가
-   생성 모델 기반 결함 생성
-   데이터 품질 검증
+   - 기본 이미지 변환(밝기, 크기, 회전)
+   - 가우시안 노이즈 추가
+   - 생성 모델 기반 결함 생성
+   - 데이터 품질 검증
 실시간 처리 시스템 (RealTimeProcessingSystem)
-   이미지 전처리 파이프라인
-   GPU 기반 병렬 처리
-   결과 통합 및 후처리
+   - 이미지 전처리 파이프라인
+   - GPU 기반 병렬 처리
+   - 결과 통합 및 후처리
 
 ## 3. 기술 개발 로드맵
 
