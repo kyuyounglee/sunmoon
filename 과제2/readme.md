@@ -353,26 +353,26 @@ class ParallelProcessor:
 
 1. **메시지 전달 함수**
 ```
-m_v^(t) = Σ M_t(h_v^(t-1), h_u^(t-1), e_uv)
-u ∈ N(v)
+m_v(t) = sum(M_t(h_v(t-1), h_u(t-1), e_uv))
+        u in N(v)
 ```
 여기서:
-- m_v^(t): 노드 v의 t번째 메시지
+- m_v(t): 노드 v의 t번째 메시지
 - N(v): 노드 v의 이웃 노드 집합
-- h_v^(t-1): 노드 v의 t-1번째 은닉 상태
+- h_v(t-1): 노드 v의 t-1번째 은닉 상태
 - e_uv: 노드 u와 v 사이의 엣지 특성
 
 2. **노드 업데이트**
 ```
-h_v^(t) = U_t(h_v^(t-1), m_v^(t))
+h_v(t) = U_t(h_v(t-1), m_v(t))
 ```
 여기서:
-- h_v^(t): 노드 v의 t번째 은닉 상태
+- h_v(t): 노드 v의 t번째 은닉 상태
 
 3. **구조 예측 확률**
 ```
-P(G|p) = Π P(v|h_v^(T)) * Π P(e_uv|h_u^(T), h_v^(T))
-v ∈ V    (u,v) ∈ E
+P(G|p) = prod(P(v|h_v(T))) * prod(P(e_uv|h_u(T), h_v(T)))
+        v in V          (u,v) in E
 ```
 여기서:
 - P(G|p): 주어진 물성 p에 대한 분자 구조 G의 확률
@@ -383,18 +383,18 @@ v ∈ V    (u,v) ∈ E
 
 1. **적합도 함수**
 ```
-f(G) = Σ w_i * |p_i - p̂_i|
-i
+f(G) = sum(w_i * |p_i - p_hat_i|)
+       i
 ```
 여기서:
 - p_i: 목표 물성
-- p̂_i: 예측 물성
+- p_hat_i: 예측 물성
 - w_i: 가중치
 
 2. **선택 확률**
 ```
-P(G_i) = f(G_i) / Σ f(G_j)
-j
+P(G_i) = f(G_i) / sum(f(G_j))
+         j
 ```
 여기서:
 - P(G_i): 분자 구조 G_i의 선택 확률
@@ -405,8 +405,8 @@ j
 
 1. **반응 확률**
 ```
-P(r|m) = exp(s(m,r)) / Σ exp(s(m,r'))
-r'
+P(r|m) = exp(s(m,r)) / sum(exp(s(m,r')))
+         r'
 ```
 여기서:
 - P(r|m): 분자 m에 대한 반응 r의 확률
@@ -424,14 +424,14 @@ s(m,r) = MLP([GNN(m), Embedding(r)])
 
 1. **반응 속도**
 ```
-r = k * Π [A_i]^α_i
-i
+r = k * prod([A_i]^alpha_i)
+     i
 ```
 여기서:
 - r: 반응 속도
 - k: 속도 상수
 - [A_i]: 반응물 농도
-- α_i: 반응 차수
+- alpha_i: 반응 차수
 
 2. **온도 의존성**
 ```
@@ -449,17 +449,17 @@ k = A * e^(-E_a/RT)
 
 1. **공동 학습 목적 함수**
 ```
-L = Σ w_i * L_i + λ * ||θ||_2^2
-i=1
+L = sum(w_i * L_i) + lambda * ||theta||_2^2
+    i=1
 ```
 여기서:
 - L_i: 각 물성의 손실 함수
-- λ: 정규화 파라미터
-- θ: 모델 파라미터
+- lambda: 정규화 파라미터
+- theta: 모델 파라미터
 
 2. **물성 예측**
 ```
-ŷ_i = f_i(GNN(G); θ_i)
+y_hat_i = f_i(GNN(G); theta_i)
 ```
 여기서:
 - f_i: 각 물성의 예측 함수
@@ -468,15 +468,15 @@ ŷ_i = f_i(GNN(G); θ_i)
 
 1. **예측 분포**
 ```
-p(y|x) = N(μ(x), σ^2(x))
+p(y|x) = N(mu(x), sigma^2(x))
 ```
 여기서:
-- μ(x): 예측 평균
-- σ^2(x): 예측 분산
+- mu(x): 예측 평균
+- sigma^2(x): 예측 분산
 
 2. **불확실성**
 ```
-uncertainty = √(E[σ^2(x)] + Var[μ(x)])
+uncertainty = sqrt(E[sigma^2(x)] + Var[mu(x)])
 ```
 여기서:
 - Var: 분산
@@ -494,28 +494,28 @@ P(s_t+1|s_t,a_t) = softmax(W * [s_t,a_t])
 
 2. **보상 함수**
 ```
-R(s,a) = α * yield + β * cost + γ * safety
+R(s,a) = alpha * yield + beta * cost + gamma * safety
 ```
 여기서:
-- α, β, γ: 가중치
+- alpha, beta, gamma: 가중치
 
 #### 1.4.2 조건 최적화
 
 1. **목적 함수**
 ```
-min f(x) = yield(x) + λ * cost(x)
+min f(x) = yield(x) + lambda * cost(x)
 x
 ```
 여기서:
 - x: 반응 조건
-- λ: 가중치
+- lambda: 가중치
 
 2. **베이지안 최적화**
 ```
-α(x) = μ(x) + κ * σ(x)
+alpha(x) = mu(x) + kappa * sigma(x)
 ```
 여기서:
-- κ: 탐색-활용 균형 파라미터
+- kappa: 탐색-활용 균형 파라미터
 
 ## 2. 시스템 아키텍처
 
@@ -595,20 +595,3 @@ x
 - OpenMM
 - TensorRT
 - CUDA 11.7+
-
-## 5. 라이선스
-
-MIT License
-
-## 6. 기여 방법
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 7. 연락처
-
-- 이메일: contact@example.com
-- 웹사이트: https://example.com 
