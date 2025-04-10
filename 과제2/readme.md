@@ -22,7 +22,7 @@
 ```
 m_v(t) = sum_{u in N(v)} M_t(h_v(t-1), h_u(t-1), e_uv)
 ```
-여기서:
+
 - m_v(t): 노드 v의 t번째 메시지
 - N(v): 노드 v의 이웃 노드 집합
 - h_v(t-1): 노드 v의 t-1번째 은닉 상태
@@ -33,7 +33,7 @@ m_v(t) = sum_{u in N(v)} M_t(h_v(t-1), h_u(t-1), e_uv)
 ```
 P(r|m) = exp(s(m,r)) / sum_{r' in R} exp(s(m,r'))
 ```
-여기서:
+
 - P(r|m): 분자 m에 대한 반응 r의 확률
 - s(m,r): 점수 함수
 - R: 가능한 모든 반응 집합
@@ -42,7 +42,7 @@ P(r|m) = exp(s(m,r)) / sum_{r' in R} exp(s(m,r'))
 ```
 x' = (x - mu) / sigma
 ```
-여기서:
+
 - x': 정규화된 데이터
 - x: 원본 데이터
 - mu: 평균
@@ -54,7 +54,7 @@ x' = (x - mu) / sigma
 ```
 L = sum_{i=1}^{n} w_i * L_i + lambda * ||theta||_2^2
 ```
-여기서:
+
 - L: 총 손실 함수
 - L_i: i번째 물성의 손실 함수
 - w_i: i번째 물성의 가중치
@@ -66,7 +66,7 @@ L = sum_{i=1}^{n} w_i * L_i + lambda * ||theta||_2^2
 ```
 rho_{XY|Z} = (rho_{XY} - rho_{XZ} * rho_{YZ}) / sqrt((1-rho_{XZ}^2)(1-rho_{YZ}^2))
 ```
-여기서:
+
 - rho_{XY|Z}: Z를 고려한 X와 Y의 부분 상관계수
 - rho_{XY}: X와 Y의 상관계수
 - rho_{XZ}: X와 Z의 상관계수
@@ -78,7 +78,7 @@ rho_{XY|Z} = (rho_{XY} - rho_{XZ} * rho_{YZ}) / sqrt((1-rho_{XZ}^2)(1-rho_{YZ}^2
 ```
 P(s_{t+1}|s_t,a_t) = softmax(W * [s_t,a_t])
 ```
-여기서:
+
 - P(s_{t+1}|s_t,a_t): 상태 s_t에서 행동 a_t를 취했을 때 다음 상태 s_{t+1}의 확률
 - W: 가중치 행렬
 - s_t: t번째 상태
@@ -88,7 +88,7 @@ P(s_{t+1}|s_t,a_t) = softmax(W * [s_t,a_t])
 ```
 min_{x in X} f(x) = yield(x) + lambda * cost(x)
 ```
-여기서:
+
 - f(x): 목적 함수
 - yield(x): 수율 함수
 - cost(x): 비용 함수
@@ -99,7 +99,7 @@ min_{x in X} f(x) = yield(x) + lambda * cost(x)
 ```
 D(x) = sqrt((x-mu)^T * Sigma^{-1} * (x-mu))
 ```
-여기서:
+
 - D(x): 이상치 점수
 - x: 관측 데이터
 - mu: 평균 벡터
