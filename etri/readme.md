@@ -119,26 +119,26 @@
 ```
 
 1. GNSS Raw Data Receiver
-   └ 멀티밴드 GNSS (L1/L2/L5) + Multi-Constellation 수신
-   └ Raw pseudorange, carrier phase, SNR, Doppler 수집
+   - 멀티밴드 GNSS (L1/L2/L5) + Multi-Constellation 수신
+   - Raw pseudorange, carrier phase, SNR, Doppler 수집
 
 2. GNSS Filter Engine
-   └ 위성 필터링 (SNR/AGC/위치 기반 품질 판단)
-   └ NLOS 감지 및 제거 (3D 지도 기반 Shadow Matching)
-   └ RTK/PPP 처리 엔진
+   - 위성 필터링 (SNR/AGC/위치 기반 품질 판단)
+   - NLOS 감지 및 제거 (3D 지도 기반 Shadow Matching)
+   - RTK/PPP 처리 엔진
 
 3. Sensor Fusion Module (Tightly-Coupled)
-   └ IMU + VIO + Odometry + GNSS 통합
-   └ 딥러닝 기반 Drift 보정 모델 포함
-   └ Factor Graph 기반 SLAM 구조 (GTSAM 등)
+   - IMU + VIO + Odometry + GNSS 통합
+   - 딥러닝 기반 Drift 보정 모델 포함
+   - Factor Graph 기반 SLAM 구조 (GTSAM 등)
 
 4. Localization Core
-   └ 위치 추정 결과 생성 (최종 절대 위치 + 신뢰도)
-   └ GNSS 끊겨도 위치 유지
+   - 위치 추정 결과 생성 (최종 절대 위치 + 신뢰도)
+   - GNSS 끊겨도 위치 유지
 
 5. Cloud Update / V2V 공유
-   └ 주변 차량과 품질 정보 공유 (Federated Learning 기반)
-   └ 서버 또는 MEC 단 클라우드 보정 정보 수신
+   - 주변 차량과 품질 정보 공유 (Federated Learning 기반)
+   - 서버 또는 MEC 단 클라우드 보정 정보 수신
 
 
 
