@@ -117,3 +117,10 @@
                      ▼
            [GPS 보정량: Δx, Δy]
 ```
+
+
+
+![img001](https://github.com/user-attachments/assets/b50da76a-90f6-4279-80aa-45fb41de3468)
+<?xml version="1.0" encoding="utf-8"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.
+RequestId:9cc8cbf9-701e-0065-3a95-aa753c000000
+Time:2025-04-11T03:55:23.4120085Z</Message><AuthenticationErrorDetail>Signed expiry time [Fri, 11 Apr 2025 00:33:03 GMT] must be after signed start time [Fri, 11 Apr 2025 03:55:23 GMT]</AuthenticationErrorDetail></Error>
